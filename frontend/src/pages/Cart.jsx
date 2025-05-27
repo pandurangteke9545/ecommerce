@@ -31,7 +31,7 @@ const Cart = () => {
     await api.delete("cart/remove",{ data: { productId } });  // productId here should be string like "6826d45949c402f0a6a6dfdb"
     fetchCart(); // reload cart after removal
   } catch (err) {
-    console.log("i am in error part");
+    console.log("i am in error part",err);
     alert("Failed to remove item");
   }
 };
@@ -58,7 +58,7 @@ const Cart = () => {
 
     console.log("OrderData :-", order);
 
-    const txnid = "txn_" + new Date().getTime(); // unique transaction ID
+    // const txnid = "txn_" + new Date().getTime(); // unique transaction ID
 
     console.log("👉 Initiating payment...");
 
