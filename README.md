@@ -29,5 +29,5 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/the-online-mart.git
-cd the-online-mart
+git clone (https://github.com/pandurangteke9545/ecommerce.git)
+cd ecommerce
