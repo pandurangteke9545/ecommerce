@@ -14,12 +14,20 @@ const login = async (req, res) => {
     const { user, token } = await authService.loginUser(req.body);
 
     // Set token as an HTTP-only cookie
+    // res.cookie('token', token, {
+    //   httpOnly: false,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: 'lax',
+    //   maxAge: 24 * 60 * 60 * 1000 // 1 day
+    // });
+
     res.cookie('token', token, {
-      httpOnly: false,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 24 * 60 * 60 * 1000 // 1 day
+  httpOnly: true,
+  secure: true,
+  sameSite: 'none',
+  maxAge: 24 * 60 * 60 * 1000
     });
+
 
     res.status(200).json({
       message: 'Login successful',
