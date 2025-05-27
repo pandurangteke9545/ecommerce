@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/api"; // your axios instance
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
