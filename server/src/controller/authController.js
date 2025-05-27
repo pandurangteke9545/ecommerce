@@ -15,7 +15,7 @@ const login = async (req, res) => {
 
     // Set token as an HTTP-only cookie
     res.cookie('token', token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000 // 1 day
