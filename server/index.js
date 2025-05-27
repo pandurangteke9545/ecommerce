@@ -18,7 +18,8 @@ app.use(
   cors({
     // origin: "http://localhost:5173", // your Vite frontend port
 
-    origin: "https://imaginative-douhua-90ccf5.netlify.app/",
+    origin: "https://imaginative-douhua-90ccf5.netlify.app",
+           
     credentials: true,
   })
 );
