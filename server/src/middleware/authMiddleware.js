@@ -2,12 +2,12 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
-  // console.log("I am in the middleware");
+  console.log("I am in the middleware");
 
   // Get token from cookies instead of Authorization header
   const token = req.cookies?.token;
 
-  // console.log("This is the frontend token",token)
+  console.log("This is the frontend token",token)
 
   if (!token) {
     return res.status(401).json({ error: 'No token provided' });
