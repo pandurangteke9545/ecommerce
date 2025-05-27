@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <nav className="flex justify-between items-center px-6 py-4 bg-blue-600 text-white">
-      <Link to="/" className="text-xl font-bold">MyShop</Link>
+      <Link to="/" className="text-xl font-bold">OnlineMart</Link>
       <div className="space-x-4">
         <Link to="/">Home</Link>
         <Link to="/cart">Cart</Link>

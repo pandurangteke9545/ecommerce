@@ -56,29 +56,45 @@ const Cart = () => {
     const res = await api.post("/orders/create");
     const order = res.data.order;
 
-    const txnid = "txn_" + new Date().getTime(); // unique transaction id
+    console.log("OrderData :-", order);
 
-    // Step 2: Initiate PayU payment
-    const payuRes = await api.post("/payu/initiate", {
-      txnid,
-      amount: order.totalAmount,
-      firstname: "John",
-      email: "john@example.com",
-      phone: "9876543210",
-      productinfo: "Mobile Purchase",
-      surl: "http://localhost:5000/api/payu/success",
-      furl: "http://localhost:5000/api/payu/failure",
+    const txnid = "txn_" + new Date().getTime(); // unique transaction ID
 
+    console.log("👉 Initiating payment...");
+
+    // Step 2: Call backend to get PayU payment parameters
+    const payuRes = await api.post("/start-payment", {
+      amount: parseFloat(order.totalAmount).toFixed(2), // ensure valid string like "500.00"
+      // name: "John", // Consider getting this from user profile
+      // email: "john@example.com", // Consider getting this from user profile
+      orderid: order._id,
+      userid: order.user
     });
 
-    const { action, params } = payuRes.data;
+    const params = payuRes.data;
+    console.log("✅ PayU Params Received:", params);
 
-    // Step 3: Auto-submit form
+    // Step 3: Validate required fields
+    const requiredFields = [
+      "key", "txnid", "amount", "productinfo",
+      "firstname", "email", "phone", "surl", "furl", "hash"
+    ];
+
+    for (const field of requiredFields) {
+      if (!params[field]) {
+        console.error(`❌ Missing PayU param: ${field}`);
+        alert("Payment parameters are incomplete. Please try again.");
+        return;
+      }
+    }
+
+    // Step 4: Create and submit the form
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = action;
+    form.action = "https://test.payu.in/_payment"; // Change to production URL when live
+    form.style.display = "none";
 
-    for (let key in params) {
+    for (const key in params) {
       const input = document.createElement("input");
       input.type = "hidden";
       input.name = key;
@@ -89,10 +105,13 @@ const Cart = () => {
     document.body.appendChild(form);
     form.submit();
   } catch (err) {
-    console.error("Order/payment failed:", err.response?.data || err.message);
-    alert("Something went wrong during payment.");
+    console.error("❌ Payment initiation failed:", err.response?.data || err.message);
+    alert("Payment initiation failed. Check console for details.");
   }
 };
+
+
+
 
 
   useEffect(() => {

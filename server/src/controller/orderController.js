@@ -24,6 +24,8 @@ const createOrder = async (req, res) => {
 
     await order.save();
 
+    
+
     // Clear the cart
     cart.products = [];
     cart.totalAmount = 0;
@@ -36,30 +38,50 @@ const createOrder = async (req, res) => {
 };
 
 
-const updateOrder = async (req, res) => {
-  const userId = req.user.userId;
-  const { orderId, transactionId, paymentMethod, paymentStatus } = req.body;
+// const updateOrder = async (req, res) => {
+//   const userId = req.user.userId;
+//   const { orderId, transactionId, paymentMethod, paymentStatus } = req.body;
 
+//   if (!orderId || !transactionId || !paymentMethod || !paymentStatus) {
+//     return res.status(400).json({ message: "Missing required payment details" });
+//   }
+  
+//   try {
+//     const order = await Order.findOne({ _id: orderId, user: userId });
+//     if (!order) return res.status(404).json({ message: "Order not found" });
+
+//     order.status = paymentStatus === 'success' ? 'paid' : 'failed';
+//     order.paymentDetails = {
+//       transactionId,
+//       paymentMethod,
+//       paymentStatus
+//     };
+
+//     await order.save();
+//     res.json({ message: "Order updated", order });
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
+
+const updateOrder = async ({ userId, orderId, transactionId, paymentMethod, paymentStatus }) => {
   if (!orderId || !transactionId || !paymentMethod || !paymentStatus) {
-    return res.status(400).json({ message: "Missing required payment details" });
+    throw new Error("Missing required payment details");
   }
 
-  try {
-    const order = await Order.findOne({ _id: orderId, user: userId });
-    if (!order) return res.status(404).json({ message: "Order not found" });
+  const order = await Order.findOne({ _id: orderId, user: userId });
+  if (!order) throw new Error("Order not found");
 
-    order.status = paymentStatus === 'success' ? 'paid' : 'failed';
-    order.paymentDetails = {
-      transactionId,
-      paymentMethod,
-      paymentStatus
-    };
+  order.status = paymentStatus === 'success' ? 'paid' : 'failed';
+  order.paymentDetails = {
+    transactionId,
+    paymentMethod,
+    paymentStatus
+  };
 
-    await order.save();
-    res.json({ message: "Order updated", order });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  await order.save();
+  return order;
 };
+
 
 module.exports = { createOrder, updateOrder };
