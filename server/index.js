@@ -232,7 +232,7 @@ app.post('/payment-success', async (req, res) => {
           <p><strong>Transaction ID:</strong> ${txnid}</p>
           <p><strong>Amount:</strong> ₹${amount}</p>
           <p><strong>Status:</strong> ${status}</p>
-          <a href="http://localhost:5173" class="btn">Go Back Home</a>
+          <a href="https://imaginative-douhua-90ccf5.netlify.app" class="btn">Go Back Home</a>
         </div>
       </body>
       </html>
@@ -330,7 +330,7 @@ app.post('/payment-failure', async (req, res) => {
         <p><strong>Transaction ID:</strong> ${txnid}</p>
         <p><strong>Amount:</strong> ₹${amount}</p>
         <p><strong>Error:</strong> ${error_message || 'Unknown error'}</p>
-        <a href="http://localhost:5173" class="btn">Try Again</a>
+        <a href="https://imaginative-douhua-90ccf5.netlify.app" class="btn">Try Again</a>
       </div>
     </body>
     </html>
