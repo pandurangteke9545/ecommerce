@@ -33,16 +33,31 @@ const login = async (req, res) => {
       message: 'Login successful',
       user: {
         id: user._id,
-        email: user.email
-      }
+        email: user.email,
+      },
+      token:token
     });
   } catch (err) {
     res.status(401).json({ error: err.message });
   }
 };
 
+// controller/authController.js
+const logout = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+};
+
+module.exports = { logout };
+
+
 
 module.exports = {
   register,
-  login
+  login,
+  logout
 };
