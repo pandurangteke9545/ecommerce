@@ -214,14 +214,14 @@ const Cart = () => {
     }
   };
 
- const removeFromCart = async (productId) => {
-  try {
+  const removeFromCart = async (productId) => {
+    try {
       await api.delete("cart/remove", { data: { productId } });
       fetchCart();
-  } catch (err) {
-    alert("Failed to remove item");
-  }
-};
+    } catch (err) {
+      alert("Failed to remove item");
+    }
+  };
 
   const updateQuantity = async (productId, quantity) => {
     if (quantity < 1) return;
@@ -233,50 +233,49 @@ const Cart = () => {
     }
   };
 
-  // Place order handler
- const handleCreateOrder = async () => {
-  try {
-    const res = await api.post("/orders/create");
-    const order = res.data.order;
+  const handleCreateOrder = async () => {
+    try {
+      const res = await api.post("/orders/create");
+      const order = res.data.order;
 
-    const payuRes = await api.post("/start-payment", {
+      const payuRes = await api.post("/start-payment", {
         amount: parseFloat(order.totalAmount).toFixed(2),
-      orderid: order._id,
+        orderid: order._id,
         userid: order.user,
-    });
+      });
 
-    const params = payuRes.data;
-    const requiredFields = [
-      "key", "txnid", "amount", "productinfo",
-      "firstname", "email", "phone", "surl", "furl", "hash"
-    ];
+      const params = payuRes.data;
+      const requiredFields = [
+        "key", "txnid", "amount", "productinfo",
+        "firstname", "email", "phone", "surl", "furl", "hash"
+      ];
 
-    for (const field of requiredFields) {
-      if (!params[field]) {
-        alert("Payment parameters are incomplete. Please try again.");
-        return;
+      for (const field of requiredFields) {
+        if (!params[field]) {
+          alert("Payment parameters are incomplete. Please try again.");
+          return;
+        }
       }
-    }
 
-    const form = document.createElement("form");
-    form.method = "POST";
+      const form = document.createElement("form");
+      form.method = "POST";
       form.action = "https://test.payu.in/_payment";
-    form.style.display = "none";
+      form.style.display = "none";
 
-    for (const key in params) {
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = key;
-      input.value = params[key];
-      form.appendChild(input);
-    }
+      for (const key in params) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = params[key];
+        form.appendChild(input);
+      }
 
-    document.body.appendChild(form);
-    form.submit();
-  } catch (err) {
+      document.body.appendChild(form);
+      form.submit();
+    } catch (err) {
       alert("Payment initiation failed.");
-  }
-};
+    }
+  };
 
   useEffect(() => {
     fetchCart();
@@ -360,4 +359,3 @@ const Cart = () => {
 };
 
 export default Cart;
-

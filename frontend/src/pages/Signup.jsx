@@ -15,7 +15,7 @@ const Signup = () => {
       alert(res.data.message || "Signup successful");
       navigate("/signin");
     } catch (err) {
-      alert(err.response?.data?.message || "Signup failed");
+      alert(err.response?.data?.message || "user already existed");
     }
   };
 

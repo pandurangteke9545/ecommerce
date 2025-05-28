@@ -22,7 +22,7 @@ const Home = () => {
   const addToCart = (productId) => {
     api.post("/cart/add", { productId, quantity: 1 })
       .then(() => alert("Added to cart"))
-      .catch(err => alert("Error: " + (err.response?.data?.message || err.message)));
+      .catch(err => alert("Login First before add to cart",err ));
   };
 
   return (

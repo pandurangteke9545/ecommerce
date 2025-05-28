@@ -49,9 +49,7 @@ const Navbar = () => {
         {isLoggedIn ? (
           <button onClick={handleLogout} className="hover:underline">Logout</button>
         ) : (
-          <>
-            <Link to="/signin">Signin</Link>
-          </>
+          <Link to="/signin">Signin</Link>
         )}
       </div>
     </nav>
