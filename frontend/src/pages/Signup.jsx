@@ -51,7 +51,7 @@ const Signup = () => {
           type="submit"
           className="w-full bg-green-600 text-white py-2 rounded"
         >
-          Sign Up
+          Submit
         </button>
       </form>
     </div>
