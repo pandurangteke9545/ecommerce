@@ -38,31 +38,21 @@ const createOrder = async (req, res) => {
 };
 
 
-// const updateOrder = async (req, res) => {
-//   const userId = req.user.userId;
-//   const { orderId, transactionId, paymentMethod, paymentStatus } = req.body;
+const getOrders = async (req, res) => {
+  const userId = req.user.userId;
 
-//   if (!orderId || !transactionId || !paymentMethod || !paymentStatus) {
-//     return res.status(400).json({ message: "Missing required payment details" });
-//   }
-  
-//   try {
-//     const order = await Order.findOne({ _id: orderId, user: userId });
-//     if (!order) return res.status(404).json({ message: "Order not found" });
+  try {
+    const orders = await Order.find({ user: new mongoose.Types.ObjectId(userId) })
+                              .populate('products.product') // To get product details
+                              .sort({ createdAt: -1 });     // Optional: newest first
 
-//     order.status = paymentStatus === 'success' ? 'paid' : 'failed';
-//     order.paymentDetails = {
-//       transactionId,
-//       paymentMethod,
-//       paymentStatus
-//     };
+    res.status(200).json({ orders });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
-//     await order.save();
-//     res.json({ message: "Order updated", order });
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// };
+
 
 const updateOrder = async ({ userId, orderId, transactionId, paymentMethod, paymentStatus }) => {
   if (!orderId || !transactionId || !paymentMethod || !paymentStatus) {
@@ -84,4 +74,4 @@ const updateOrder = async ({ userId, orderId, transactionId, paymentMethod, paym
 };
 
 
-module.exports = { createOrder, updateOrder };
+module.exports = { createOrder, updateOrder,getOrders };
