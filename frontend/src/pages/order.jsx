@@ -22,7 +22,7 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
-  if (loading) return <div className="text-center mt-10">Loading orders...</div>;
+  if (loading) return <div className="text-center mt-10 text-4xl font-bold">Loading orders...</div>;
   if (error) return <div className="text-center text-red-500 mt-10">{error}</div>;
 
   return (
@@ -35,8 +35,8 @@ const Orders = () => {
         orders.map((order) => (
           <div
             key={order._id}
-            className="mb-6 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm"
-          >
+            className="mb-6 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm flex justify-between"
+          > <div>
             <div className="mb-2">
               <span className="font-semibold">Order ID:</span> {order._id}
             </div>
@@ -56,6 +56,12 @@ const Orders = () => {
                   </li>
                 ))}
               </ul>
+            </div>
+            </div>
+                
+            <div>
+                <h1>Payment :- {order.paymentDetails?.paymentStatus ?? "pending"}</h1>
+                <h1>Order Status :- {order.status}</h1>
             </div>
           </div>
         ))
