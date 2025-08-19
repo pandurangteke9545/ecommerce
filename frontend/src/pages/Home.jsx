@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "../api/api";
+import { ToastContainer,toast } from "react-toastify";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [loading , setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true)
     api.get("/products/")
       .then(res => {
         console.log("Fetched products:", res.data);
@@ -16,24 +19,31 @@ const Home = () => {
           console.error("Unexpected response structure:", res.data);
         }
       })
-      .catch(err => console.error("Error fetching products:", err));
+      .catch(err => console.error("Error fetching products:", err)).finally(setLoading(false));
   }, []);
 
   const addToCart = (productId) => {
     api.post("/cart/add", { productId, quantity: 1 })
-      .then(() => alert("Added to cart"))
-      .catch(err => alert("Login First before add to cart",err ));
+      .then(() => toast.success("Added To Cart"))
+      .catch(err => toast.error("Please Login",err) );
   };
 
+  if(loading){
+    return(
+      <>
+      <h1 className=" flex font-bold text-4xl justify-center items-center">Loading...</h1>
+      </>
+    )
+  }
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center">Explore Our Products</h1>
+      {/* <h1 className="text-3xl font-bold mb-6 text-center">Explore Our Products</h1> */}
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {products.map(product => (
           <div
-  key={product._id}
-  className="bg-white border border-gray-200 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
->
+    key={product._id}
+    className="bg-white border border-gray-200 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
+  >
   <img
     src={product.image}
     alt={product.name}
@@ -42,7 +52,7 @@ const Home = () => {
   <div className="p-4">
     <h2 className="text-xl font-semibold text-gray-800">{product.name}</h2>
     <p className="text-sm text-gray-600 mt-1">{product.description}</p>
-    <p className="text-lg font-bold text-blue-600 mt-2">${product.price}</p>
+    <p className="text-lg font-bold text-blue-600 mt-2">₹{product.price}</p>
     <button
       onClick={() => addToCart(product._id)}
       className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors duration-200"
@@ -55,8 +65,11 @@ const Home = () => {
       
         ))}
       </div>
+      <ToastContainer
+       autoClose={1000}
+      />
     </div>
-  );
+  )
 };
 
 export default Home;
