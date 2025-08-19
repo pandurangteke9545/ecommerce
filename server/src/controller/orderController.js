@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Order = require('../models/Order');  // Fixed import: Order model
-const Cart = require('../models/Cart');    // Fixed import: Cart model
+const Order = require('../models/Order');  
+const Cart = require('../models/Cart');    
 
 const createOrder = async (req, res) => {
   const userId = req.user.userId;
@@ -24,7 +24,6 @@ const createOrder = async (req, res) => {
 
     await order.save();
 
-    
 
     // Clear the cart
     cart.products = [];
@@ -43,9 +42,11 @@ const getOrders = async (req, res) => {
 
   try {
     const orders = await Order.find({ user: new mongoose.Types.ObjectId(userId) })
-                              .populate('products.product') // To get product details
-                              .sort({ createdAt: -1 });     // Optional: newest first
+                              .populate('products.product') 
+                              .sort({ createdAt: -1 });   
 
+                              console.log(orders)
+                  
     res.status(200).json({ orders });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -62,7 +63,7 @@ const updateOrder = async ({ userId, orderId, transactionId, paymentMethod, paym
   const order = await Order.findOne({ _id: orderId, user: userId });
   if (!order) throw new Error("Order not found");
 
-  order.status = paymentStatus === 'success' ? 'paid' : 'failed';
+  order.status = paymentStatus === 'success' ? 'Placed' : 'cancelled';
   order.paymentDetails = {
     transactionId,
     paymentMethod,
