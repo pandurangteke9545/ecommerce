@@ -16,11 +16,7 @@ const { updateOrder } = require('./src/controller/orderController');
 
 app.use(
   cors({
-    // origin: "http://localhost:5173", // your Vite frontend port
-
-
-    origin: "https://imaginative-douhua-90ccf5.netlify.app",
-           
+    origin: ["http://localhost:5173","https://imaginative-douhua-90ccf5.netlify.app"] ,          
     credentials: true,
   })
 );
