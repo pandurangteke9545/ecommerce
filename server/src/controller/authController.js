@@ -34,6 +34,7 @@ const login = async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
+        roll : user.roll ? user.roll : "user"
       },
       token:token
     });

@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
   },
   description: String,
   type: String,
-  image: String, // optional field
+  image: String, 
   createdAt: {
     type: Date,
     default: Date.now

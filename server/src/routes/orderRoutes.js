@@ -1,12 +1,13 @@
-// routes/orderRoutes.js
 const express = require('express');
-const { createOrder,updateOrder,getOrders } = require('../controller/orderController');
+const { createOrder,updateOrder,getOrders, getAllOrders,updateOrderStatus } = require('../controller/orderController');
 const authMiddleware = require('../middleware/authMiddleware'); // if using auth
-const router = express.Router();
+const orderrouter = express.Router();
 
-router.post('/create', authMiddleware, createOrder);
-router.post('/update', authMiddleware, updateOrder);
-router.get('/get', authMiddleware,getOrders);
+orderrouter.post('/create', authMiddleware, createOrder);
+orderrouter.post('/update', authMiddleware, updateOrder);
+orderrouter.post('/updateStatus', authMiddleware,updateOrderStatus );
+orderrouter.get('/get', authMiddleware,getOrders);
+orderrouter.get('/getallorder',authMiddleware,getAllOrders)
 
 
-module.exports = router;
+module.exports = orderrouter;

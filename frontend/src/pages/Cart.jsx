@@ -43,10 +43,13 @@ const Cart = () => {
 
   const handleCreateOrder = async () => {
     try {
+      console.log("near order")
       const res = await api.post("/orders/create");
+      
       const order = res.data.order;
+      console.log("Order pass",order)
 
-      const payuRes = await api.post("/start-payment", {
+      const payuRes = await api.post("/payu/start-payment", {
         amount: parseFloat(order.totalAmount).toFixed(2),
         orderid: order._id,
         userid: order.user,

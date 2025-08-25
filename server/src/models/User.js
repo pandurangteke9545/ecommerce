@@ -12,7 +12,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  name: String
+  name: String,
+
+  roll: {type:String , default:"user"},
+
+  image :{type:String, default:"https://www.shutterstock.com/image-vector/avatar-gender-neutral-silhouette-vector-600nw-2470054311.jpg"}
+
 });
 
 module.exports = mongoose.model('User', userSchema);

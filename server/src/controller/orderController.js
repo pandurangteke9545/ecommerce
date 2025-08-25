@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const Order = require('../models/Order');  
 const Cart = require('../models/Cart');    
+const User = require('../models/User');
+const { response } = require('express');
 
 const createOrder = async (req, res) => {
   const userId = req.user.userId;
-
+  
   try {
     const cart = await Cart.findOne({ user: new mongoose.Types.ObjectId(userId) })
                            .populate('products.product');
@@ -53,8 +55,6 @@ const getOrders = async (req, res) => {
   }
 };
 
-
-
 const updateOrder = async ({ userId, orderId, transactionId, paymentMethod, paymentStatus }) => {
   if (!orderId || !transactionId || !paymentMethod || !paymentStatus) {
     throw new Error("Missing required payment details");
@@ -75,4 +75,36 @@ const updateOrder = async ({ userId, orderId, transactionId, paymentMethod, paym
 };
 
 
-module.exports = { createOrder, updateOrder,getOrders };
+const updateOrderStatus = async (req, res) => {
+  const {orderId,userId,status} = req.body
+  console.log(orderId,status,userId)
+  if (!orderId || !status ) {
+    throw new Error("Missing details");
+  }
+
+  const order = await Order.findOne({ _id: orderId, user: userId });
+  if (!order) throw new Error("Order not found");
+
+
+  order.status = status
+  await order.save();
+  res.status(200).json({message:"Order Status Updated"})
+  return order;
+
+};
+
+
+const getAllOrders = async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const orders = await Order.find().populate('products.product').sort({ createdAt: -1 });   
+    console.log(orders)              
+    res.status(200).json({ orders });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+module.exports = { createOrder, updateOrder,getOrders,getAllOrders,updateOrderStatus };

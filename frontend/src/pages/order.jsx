@@ -60,8 +60,8 @@ const Orders = () => {
             </div>
                 
             <div>
-                <h1>Payment :- {order.paymentDetails?.paymentStatus ?? "pending"}</h1>
-                <h1>Order Status :- {order.status}</h1>
+                <h1> <span className="font-semibold">Payment :-</span> {order.paymentDetails?.paymentStatus ?? "pending"}</h1>
+                <h1><span className="font-semibold">Order Status :-</span> {order.status}</h1>
             </div>
           </div>
         ))

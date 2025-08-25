@@ -25,13 +25,20 @@ const Signin = () => {
       console.log("This is the token from responce",res.data.token)
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("roll", res.data.user.roll);
       }
 
       // ✅ Trigger auth state update (for Navbar or other components)
       window.dispatchEvent(new Event("authChange"));
        toast.success('Login Successfully !')
        setTimeout(()=>{
-          navigate("/");
+            const roll = localStorage.getItem("roll")
+            if(roll === "admin"){
+              navigate("/admin");
+            }else{
+              navigate("/");
+            }
+          
        },1100)
       
     } catch (err) {
