@@ -31,3 +31,8 @@
 ```bash
 git clone (https://github.com/pandurangteke9545/ecommerce.git)
 cd ecommerce
+
+use demo credentials
+for as user : shree18@gmail.com
+as admin    : shree@gmail.com
+password    : Shree
