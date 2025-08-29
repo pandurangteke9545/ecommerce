@@ -30,7 +30,6 @@ const createOrder = async (req, res) => {
     await order.save();
 
 
-    // Clear the cart
     cart.products = [];
     cart.totalAmount = 0;
     await cart.save();
