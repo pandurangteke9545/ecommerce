@@ -11,7 +11,7 @@ const payurouter = require('./src/routes/payuRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
-
+const {init} = require("./src/service/socket");
 
 app.use(
   cors({
@@ -36,28 +36,11 @@ app.use('/api/user',userRoutes);
 const {createServer}  = require('http')
 const { Server } = require("socket.io");
 const httpServer = createServer(app);
+init(httpServer)
 
-const io = new Server(httpServer, { 
-  cors:{
-    origin : "*"
-  }
- });
-
-io.on("connection", (socket) => {
-
-  console.log("Client Connected :", socket.id)
-
-  socket.on("disconnected",()=>{
-    console.log("Client Disconnected")
-  })
-
-
-  
-});
-
-
-// io.emit(console.log("order updated" , {orderId,status}))
-
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+
+

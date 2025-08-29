@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ProfileContext } from "../context/ProfileContext";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { fetchProfile } = useContext(ProfileContext);
 
   const handleSignin = async (e) => {
     e.preventDefault();
@@ -17,74 +17,100 @@ const Signin = () => {
       const res = await api.post(
         "/auth/login",
         { email, password },
-        { withCredentials: true } // ✅ Ensure cookies are stored if using sessions
+        { withCredentials: true }
       );
 
-      // ✅ Save token if returned (adjust key if different)
-
-      console.log("This is the token from responce",res.data.token)
       if (res.data.token) {
+        // store only token
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("roll", res.data.user.roll);
-      }
 
-      // ✅ Trigger auth state update (for Navbar or other components)
-      window.dispatchEvent(new Event("authChange"));
-       toast.success('Login Successfully !')
-       setTimeout(()=>{
-            const roll = localStorage.getItem("roll")
-            if(roll === "admin"){
+        // trigger profile refresh
+        await fetchProfile();
+
+        window.dispatchEvent(new Event("authChange"));
+        toast.success("Login Successfully !");
+
+        setTimeout(() => {
+          const storedProfile = localStorage.getItem("profile");
+          if (storedProfile) {
+            const { roll } = JSON.parse(storedProfile);
+            if (roll === "admin") {
               navigate("/admin");
-            }else{
+            } else {
               navigate("/");
             }
-          
-       },1100)
-      
+          } else {
+            navigate("/"); // fallback
+          }
+        }, 1100);
+      }
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      toast.error(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">Sign In</h2>
-      <form onSubmit={handleSignin} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full border px-4 py-2 rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full border px-4 py-2 rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded"
-        >
-          Sign In
-        </button>
-        <p className="text-sm text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+        {/* Header */}
+        <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-2">
+          Welcome Back 👋
+        </h2>
+        <p className="text-center text-gray-500 mb-6">
+          Sign in to continue to your account
+        </p>
+
+        {/* Form */}
+        <form onSubmit={handleSignin} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="you@example.com"
+              className="w-full border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 px-4 py-2 rounded-lg outline-none transition"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              placeholder="••••••••"
+              className="w-full border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 px-4 py-2 rounded-lg outline-none transition"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-indigo-700 hover:to-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition"
+          >
+            Sign In
+          </button>
+        </form>
+
+        {/* Footer */}
+        <p className="text-sm text-center mt-6 text-gray-600">
           Don’t have an account?{" "}
           <span
             onClick={() => navigate("/signup")}
-            className="text-blue-600 hover:underline cursor-pointer"
+            className="text-blue-600 font-medium hover:underline cursor-pointer"
           >
             Sign Up
           </span>
         </p>
-      </form>
-      <ToastContainer
-      autoClose='1000'
-      />
+      </div>
+
+      <ToastContainer autoClose={1000} />
     </div>
   );
 };

@@ -19,8 +19,8 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Placed', 'cancelled', 'Picked' , 'Delivered'],
-    default: 'cancelled'
+    enum: ['Placed', 'Cancelled', 'Picked' , 'Delivered'],
+    default: 'Cancelled'
   },
   paymentDetails: {
     transactionId: String,

@@ -3,6 +3,9 @@ const Order = require('../models/Order');
 const Cart = require('../models/Cart');    
 const User = require('../models/User');
 const { response } = require('express');
+const {getIO} = require('../service/socket')
+
+
 
 const createOrder = async (req, res) => {
   const userId = req.user.userId;
@@ -75,6 +78,7 @@ const updateOrder = async ({ userId, orderId, transactionId, paymentMethod, paym
 };
 
 
+
 const updateOrderStatus = async (req, res) => {
   const {orderId,userId,status} = req.body
   console.log(orderId,status,userId)
@@ -88,10 +92,14 @@ const updateOrderStatus = async (req, res) => {
 
   order.status = status
   await order.save();
+  getIO().emit("orderStatusUpdate", { orderId, status });
   res.status(200).json({message:"Order Status Updated"})
+ 
   return order;
 
 };
+
+
 
 
 const getAllOrders = async (req, res) => {
