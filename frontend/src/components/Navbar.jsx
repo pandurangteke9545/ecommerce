@@ -60,15 +60,10 @@ const Navbar = () => {
     <nav className="flex justify-between h-26 items-center px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg sticky top-0 z-50">
       
 
-      {isLoggedIn && profile?.roll === "admin" ? (
-          <Link className="" to="/admin">
-            <img src="\public\onlinemart.jpeg" alt="Online Mart" className="p-3 h-25"  />
-          </Link>
-        ) : (
           <Link className="" to="/">
-           <img src="\public\onlinemart.jpeg" alt="Online Mart" className="p-3 h-25"  />
+            <img src="\src\assets\onlinemart.jpeg" alt="Online Mart" className="p-3 h-25"  />
           </Link>
-        )}
+        
 
       <div className="hidden md:flex space-x-6 text-lg items-center">
         {isLoggedIn && profile?.roll === "admin" ? (

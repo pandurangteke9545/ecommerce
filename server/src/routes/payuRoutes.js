@@ -21,10 +21,10 @@ payurouter.post('/start-payment', async (req, res) => {
   const productinfo = 'Test Product';
   const firstname = user.name;
   const phone = '9876543210'; // Customer phone number
-  // const surl = 'https://ecommerce-hq8o.onrender.com/payment-success';
-  // const furl = 'https://ecommerce-hq8o.onrender.com/payment-failure'; 
-  const surl = 'http://localhost:5000/api/payu/payment-success';
-  const furl = 'http://localhost:5000/api/payu/payment-failure'; 
+  const surl = 'https://ecommerce-hq8o.onrender.com/payment-success';
+  const furl = 'https://ecommerce-hq8o.onrender.com/payment-failure'; 
+  // const surl = 'http://localhost:5000/api/payu/payment-success';
+  // const furl = 'http://localhost:5000/api/payu/payment-failure'; 
   const salt = PAYU_SALT; // Your PayU Salt
   const udf1=orderid;
   const udf2=userid;
@@ -185,7 +185,7 @@ payurouter.post('/payment-success', async (req, res) => {
           <p><strong>Transaction ID:</strong> ${txnid}</p>
           <p><strong>Amount:</strong> ₹${amount}</p>
           <p><strong>Status:</strong> ${status}</p>
-          <a href="http://localhost:5173/orders" class="btn">My Orders</a>
+          <a href="https://imaginative-douhua-90ccf5.netlify.app/orders" class="btn">My Orders</a>
         </div>
       </body>
       </html>
