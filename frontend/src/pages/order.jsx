@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 
 const url = import.meta.env.VITE_BASE_URL
 console.log(url)
-const socket = io(url, {
+const socket = io("https://ecommerce-hq8o.onrender.com", {
   transports: ["websocket", "polling"]
 });
 
