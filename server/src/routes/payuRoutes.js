@@ -183,7 +183,7 @@ payurouter.post('/payment-success', async (req, res) => {
           <p><strong>Transaction ID:</strong> ${txnid}</p>
           <p><strong>Amount:</strong> ₹${amount}</p>
           <p><strong>Status:</strong> ${status}</p>
-          <a href="https://imaginative-douhua-90ccf5.netlify.app/orders" class="btn">My Orders</a>
+          <a href="https://imaginative-douhua-90ccf5.netlify.app" class="btn">Home</a>
         </div>
       </body>
       </html>
@@ -281,7 +281,7 @@ payurouter.post('/payment-failure', async (req, res) => {
         <p><strong>Transaction ID:</strong> ${txnid}</p>
         <p><strong>Amount:</strong> ₹${amount}</p>
         <p><strong>Error:</strong> ${error_message || 'Unknown error'}</p>
-        <a href="http://localhost:5173/" class="btn">Home</a>
+        <a href="https://imaginative-douhua-90ccf5.netlify.app" class="btn">Home</a>
       </div>
     </body>
     </html>
