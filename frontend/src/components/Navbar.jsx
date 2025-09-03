@@ -3,6 +3,7 @@ import { useEffect, useState, useContext, useRef } from "react";
 import api from "../api/api";
 import { ProfileContext } from "../context/ProfileContext";
 import { Menu, X } from "lucide-react";
+import logo from "../assets/onlinemart.jpeg"
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -61,7 +62,7 @@ const Navbar = () => {
       
 
           <Link className="" to="/">
-            <img src="\src\assets\onlinemart.jpeg" alt="Online Mart" className="p-3 h-25"  />
+            <img src={logo} alt="Online Mart" className="p-3 h-25"  />
           </Link>
         
 
